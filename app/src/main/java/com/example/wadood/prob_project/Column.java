@@ -6,13 +6,14 @@ public class Column {
     private String header;
     private ArrayList<Double> cells;
 
-    Column(int rows, String header){
+    Column(String header){
         this.header = header;
-        cells = new ArrayList<>(rows);
+        cells = new ArrayList<Double>();
+
     }
     public void insertRow(int row, double entry)
     {
-        cells.add(row,entry);
+        cells.add(entry);
     }
     public double getRow(int row)
     {

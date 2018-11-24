@@ -84,14 +84,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             FormulaEvaluator formulaEvaluator = workbook.getCreationHelper().createFormulaEvaluator();
 
             Row headers = sheet.getRow(0);
-            int rowsCount = sheet.getPhysicalNumberOfRows()-1;
+            int rowsCount = sheet.getPhysicalNumberOfRows();
             int colsCount = headers.getPhysicalNumberOfCells();
 
             sheetData = new Sheet(colsCount);
 
             for(int c = 0; c < colsCount; c++) {
                 String value = getCellAsString(headers, c, formulaEvaluator);
-                sheetData.setColumn(c, new Column(rowsCount, value));
+                sheetData.setColumn(c, new Column(value));
             }
             for(int r = 1; r < rowsCount; r++) {
                 Row row = sheet.getRow(r);
@@ -128,7 +128,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 default:
             }
         } catch (NullPointerException e) {
-
             Log.e(TAG, "getCellAsString: NullPointerException: " + e.getMessage() );
         }
         return value;
