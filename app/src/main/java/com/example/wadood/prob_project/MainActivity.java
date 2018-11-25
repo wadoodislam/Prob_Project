@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
@@ -22,13 +23,20 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "MainActivity";
     private Sheet sheetData;
-    private int activeColumn=0;
+    private int activeColumn=4;
     final static int OPEN_EXCEL_FILE=0;
+    private TextView minTV;
+    private TextView maxTV;
+    private TextView meanTV;
+    private TextView modeTV;
+    private TextView varianceTV;
+    private TextView deviationTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +48,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initGuiComponents() {
         findViewById(R.id.file_button).setOnClickListener(this);
+        minTV = findViewById(R.id.min_textview);
+        maxTV = findViewById(R.id.max_textview);
+        meanTV = findViewById(R.id.mean_textview);
+        modeTV = findViewById(R.id.mode_textview);
+        varianceTV = findViewById(R.id.variance_textview);
+        deviationTV = findViewById(R.id.deviation_textview);
     }
 
     @Override
@@ -72,7 +86,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void displayDiscription() {
-
+        DecimalFormat formatter = new DecimalFormat("#0.000");
+        ;
+        Column column = sheetData.getColumn(activeColumn);
+        minTV.setText(Double.toString(column.min()));
+        maxTV.setText(Double.toString(column.max()));
+        meanTV.setText(Double.toString(column.mean()));
+        modeTV.setText(Double.toString(column.mode()));
+        varianceTV.setText(formatter.format(column.variance()));
+        deviationTV.setText(formatter.format(column.deviation()));
     }
 
     private void readExcelData(String filePath) {
