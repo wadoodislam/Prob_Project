@@ -87,7 +87,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void displayDiscription() {
         DecimalFormat formatter = new DecimalFormat("#0.000");
-        ;
         Column column = sheetData.getColumn(activeColumn);
         minTV.setText(Double.toString(column.min()));
         maxTV.setText(Double.toString(column.max()));
