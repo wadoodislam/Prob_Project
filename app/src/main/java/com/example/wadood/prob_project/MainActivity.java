@@ -8,6 +8,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -25,11 +28,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     private static final String TAG = "MainActivity";
     private Sheet sheetData;
-    private int activeColumn=4;
     final static int OPEN_EXCEL_FILE=0;
     private TextView minTV;
     private TextView maxTV;
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView modeTV;
     private TextView varianceTV;
     private TextView deviationTV;
+    private Spinner columnSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         modeTV = findViewById(R.id.mode_textview);
         varianceTV = findViewById(R.id.variance_textview);
         deviationTV = findViewById(R.id.deviation_textview);
+        columnSpinner = findViewById(R.id.spinner);
+        ArrayAdapter<CharSequence> spinnerArrayAdapter = ArrayAdapter.createFromResource(
+                this, R.array.no_column,
+                android.R.layout.simple_spinner_item
+        );
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        columnSpinner.setAdapter(spinnerArrayAdapter);
     }
 
     @Override
@@ -77,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case OPEN_EXCEL_FILE:
             {
                 readExcelData(data.getData().getPath());
-                displayDiscription();
+                initSpinner();
                 break;
             }
             default:
@@ -85,12 +95,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void displayDiscription() {
+    private void initSpinner() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                this, android.R.layout.simple_spinner_item,
+                sheetData.getColumnNames()
+        );
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        columnSpinner.setAdapter(adapter);
+        columnSpinner.setOnItemSelectedListener(this);
+    }
+
+    private void displayDiscription(int activeColumn) {
         DecimalFormat formatter = new DecimalFormat("#0.000");
         Column column = sheetData.getColumn(activeColumn);
         minTV.setText(Double.toString(column.min()));
         maxTV.setText(Double.toString(column.max()));
-        meanTV.setText(Double.toString(column.mean()));
+        meanTV.setText(formatter.format(column.mean()));
         modeTV.setText(Double.toString(column.mode()));
         varianceTV.setText(formatter.format(column.variance()));
         deviationTV.setText(formatter.format(column.deviation()));
@@ -169,6 +189,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
     }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+        displayDiscription(position);
+    }
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+
 }
 
 

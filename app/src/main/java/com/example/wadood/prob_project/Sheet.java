@@ -24,4 +24,12 @@ public class Sheet {
     public Column getColumn(int col_no) {
         return columns[col_no];
     }
+
+    public String[] getColumnNames() {
+        String[] names = new String[columns.length];
+        for(int i=0; i<columns.length; i++){
+            names[i] = columns[i].getHeader();
+        }
+        return names;
+    }
 }
