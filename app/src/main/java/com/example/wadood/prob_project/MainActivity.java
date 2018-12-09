@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView modeTV;
     private TextView varianceTV;
     private TextView deviationTV;
-    private Spinner columnSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,21 +62,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         modeTV = findViewById(R.id.mode_textview);
         varianceTV = findViewById(R.id.variance_textview);
         deviationTV = findViewById(R.id.deviation_textview);
-        columnSpinner = findViewById(R.id.spinner);
-
-        ArrayAdapter<CharSequence> spinnerArrayAdapter = ArrayAdapter.createFromResource(
-                this, R.array.no_column,
-                android.R.layout.simple_spinner_item
-        );
-        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        columnSpinner.setAdapter(spinnerArrayAdapter);
+        initSpinner();
     }
 
-    private void startGraphActivity(String graph){
-        Intent intent = new Intent(getBaseContext(), GraphActivity.class);
-        intent.putExtra("GRAPH_TYPE", graph);
-        intent.putExtra("SHEET_DATA", (new Gson()).toJson(sheetData));
-        startActivity(intent);
+    private void initSpinner() {
+        Spinner columnSpinner = findViewById(R.id.spinner);
+        ArrayAdapter<CharSequence> adapter;
+        if(sheetData==null){
+            adapter = ArrayAdapter.createFromResource(
+                this, R.array.no_column,
+                android.R.layout.simple_spinner_item
+            );
+        }
+        else{
+            adapter = new ArrayAdapter<CharSequence>(
+                this, android.R.layout.simple_spinner_item,
+                sheetData.getColumnNames()
+            );
+            columnSpinner.setOnItemSelectedListener(this);
+        }
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        columnSpinner.setAdapter(adapter);
     }
 
     @Override
@@ -94,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             }
             case R.id.barchart: {
-                startGraphActivity("BARCHART");
+                startGraphActivity("BAR_CHART");
                 break;
             }
             case R.id.histogram: {
@@ -104,6 +109,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             default:
                 break;
         }
+    }
+
+    private void startGraphActivity(String graph){
+        Intent intent = new Intent(getBaseContext(), GraphActivity.class);
+        intent.putExtra("GRAPH_TYPE", graph);
+        intent.putExtra("SHEET_DATA", (new Gson()).toJson(sheetData));
+        startActivity(intent);
     }
 
     @Override
@@ -121,17 +133,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void initSpinner() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                this, android.R.layout.simple_spinner_item,
-                sheetData.getColumnNames()
-        );
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        columnSpinner.setAdapter(adapter);
-        columnSpinner.setOnItemSelectedListener(this);
-    }
-
-    private void displayDiscription(int activeColumn) {
+    private void displayDescription(int activeColumn) {
         DecimalFormat formatter = new DecimalFormat("#0.000");
         Column column = sheetData.getColumn(activeColumn);
         minTV.setText(Double.toString(column.min()));
@@ -218,8 +220,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-        displayDiscription(position);
+        displayDescription(position);
     }
+
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
