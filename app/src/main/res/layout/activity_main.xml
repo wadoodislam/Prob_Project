@@ -23,42 +23,48 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Min:"
-                android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/max_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Max:"
-                android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/mean_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Mean:"
-                android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/mode_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Mode"
-                android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/variance_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Variance:"
-                android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/deviation_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="STD:"
-                android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout
@@ -71,36 +77,42 @@
                 android:id="@+id/min_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
 
             <TextView
                 android:id="@+id/max_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
 
             <TextView
                 android:id="@+id/mean_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
 
             <TextView
                 android:id="@+id/mode_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
 
             <TextView
                 android:id="@+id/variance_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
 
             <TextView
                 android:id="@+id/deviation_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
 
         </LinearLayout>
@@ -109,18 +121,63 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_weight="0.8"
-        android:orientation="horizontal">
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/col_selector"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:gravity="center_horizontal"
+            android:text="Select Column"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            tools:background="@android:color/holo_green_light" />
 
         <Spinner
             android:id="@+id/spinner"
             android:layout_width="match_parent"
-            android:layout_height="40dp" />
+            android:layout_height="40dp"
+            android:background="@android:color/holo_blue_light"
+            tools:background="@android:color/holo_orange_light" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/barchart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                app:srcCompat="@drawable/bar_chart" />
+
+            <ImageView
+                android:id="@+id/piechart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                app:srcCompat="@drawable/pie_chart" />
+
+            <ImageView
+                android:id="@+id/histogram"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                app:srcCompat="@drawable/histogram" />
+        </LinearLayout>
     </LinearLayout>
 
     <Button
         android:id="@+id/file_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@android:color/holo_blue_bright"
         android:text="@string/open_file" />
 </LinearLayout>

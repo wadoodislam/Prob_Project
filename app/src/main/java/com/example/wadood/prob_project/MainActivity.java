@@ -10,8 +10,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
@@ -51,6 +54,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initGuiComponents() {
         findViewById(R.id.file_button).setOnClickListener(this);
+        findViewById(R.id.piechart).setOnClickListener(this);
+        findViewById(R.id.barchart).setOnClickListener(this);
+        findViewById(R.id.histogram).setOnClickListener(this);
         minTV = findViewById(R.id.min_textview);
         maxTV = findViewById(R.id.max_textview);
         meanTV = findViewById(R.id.mean_textview);
@@ -58,12 +64,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         varianceTV = findViewById(R.id.variance_textview);
         deviationTV = findViewById(R.id.deviation_textview);
         columnSpinner = findViewById(R.id.spinner);
+
         ArrayAdapter<CharSequence> spinnerArrayAdapter = ArrayAdapter.createFromResource(
                 this, R.array.no_column,
                 android.R.layout.simple_spinner_item
         );
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         columnSpinner.setAdapter(spinnerArrayAdapter);
+    }
+
+    private void startGraphActivity(String graph){
+        Intent intent = new Intent(getBaseContext(), GraphActivity.class);
+        intent.putExtra("GRAPH_TYPE", graph);
+        intent.putExtra("SHEET_DATA", (new Gson()).toJson(sheetData));
+        startActivity(intent);
     }
 
     @Override
@@ -73,6 +87,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("application/vnd.ms-excel");
                 startActivityForResult(intent, OPEN_EXCEL_FILE);
+                break;
+            }
+            case R.id.piechart: {
+                startGraphActivity("PIE_CHART");
+                break;
+            }
+            case R.id.barchart: {
+                startGraphActivity("BARCHART");
+                break;
+            }
+            case R.id.histogram: {
+                startGraphActivity("HISTOGRAM");
                 break;
             }
             default:
