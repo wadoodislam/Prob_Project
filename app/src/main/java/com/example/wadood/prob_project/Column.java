@@ -19,6 +19,9 @@ public class Column {
     {
         return cells.get(row);
     }
+    public int length(){
+        return cells.size();
+    }
     public double min(){
         return Collections.min(cells);
     }
@@ -64,5 +67,9 @@ public class Column {
     }
     public String getHeader() {
         return header;
+    }
+
+    public String getKey(int i) {
+        return Double.toString(cells.get(i));
     }
 }

@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -70,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ArrayAdapter<CharSequence> adapter;
         if(sheetData==null){
             adapter = ArrayAdapter.createFromResource(
-                this, R.array.no_column,
+                this, R.array.no_file,
                 android.R.layout.simple_spinner_item
             );
         }
@@ -79,10 +78,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 this, android.R.layout.simple_spinner_item,
                 sheetData.getColumnNames()
             );
-            columnSpinner.setOnItemSelectedListener(this);
         }
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         columnSpinner.setAdapter(adapter);
+        columnSpinner.setOnItemSelectedListener(this);
     }
 
     @Override
@@ -220,7 +219,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-        displayDescription(position);
+        if (sheetData!=null){
+            displayDescription(position);
+        }
     }
 
     @Override

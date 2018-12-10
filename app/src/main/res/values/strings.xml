@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Prob_Project</string>
     <string name="open_file">Open File</string>
-    <string-array name="no_column">
-        <item>No column selected</item>
+    <string-array name="no_file">
+        <item>No File Opened Yet</item>
     </string-array>
 </resources>
