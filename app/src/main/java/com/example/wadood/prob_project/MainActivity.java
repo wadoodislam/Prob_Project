@@ -185,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Row row = sheet.getRow(r);
                 for(int c = 0; c < colsCount; c++) {
                     String value = getCellAsString(row, c, formulaEvaluator);
-                    sheetData.getColumn(c).insertRow(r, Double.parseDouble(value));
+                    sheetData.getColumn(c).insertRow(Double.parseDouble(value));
                 }
             }
 

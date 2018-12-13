@@ -8,10 +8,10 @@ public class Column {
 
     Column(String header){
         this.header = header;
-        cells = new ArrayList<Double>();
+        cells = new ArrayList<>();
 
     }
-    public void insertRow(int row, double entry)
+    public void insertRow(double entry)
     {
         cells.add(entry);
     }

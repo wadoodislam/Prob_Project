@@ -11,7 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.Chart;
@@ -52,8 +51,6 @@ public class GraphActivity extends AppCompatActivity implements AdapterView.OnIt
         graphType = getIntent().getStringExtra("GRAPH_TYPE");
 
         initGuiComponents();
-
-        Toast.makeText(Context, graphType, Toast.LENGTH_LONG).show();
     }
     @SuppressLint("SetTextI18n")
     private void initGuiComponents(){
