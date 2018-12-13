@@ -1,9 +1,12 @@
 package com.example.wadood.prob_project;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -69,14 +72,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ArrayAdapter<CharSequence> adapter;
         if(sheetData==null){
             adapter = ArrayAdapter.createFromResource(
-                this, R.array.no_file,
-                android.R.layout.simple_spinner_item
+                    this, R.array.no_file,
+                    android.R.layout.simple_spinner_item
             );
         }
         else{
             adapter = new ArrayAdapter<CharSequence>(
-                this, android.R.layout.simple_spinner_item,
-                sheetData.getColumnNames()
+                    this, android.R.layout.simple_spinner_item,
+                    sheetData.getColumnNames()
             );
         }
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -117,13 +120,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivity(intent);
     }
 
+    private String getPath(Context context, Uri uri){
+        if ("content".equalsIgnoreCase(uri.getScheme())) {
+            final String docId = uri.getLastPathSegment();
+            final String[] split = docId.split(":");
+            final String type = split[0];
+
+            if ("primary".equalsIgnoreCase(type)) {
+                return Environment.getExternalStorageDirectory() + "/" + split[1];
+            }
+        }
+        else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            return uri.getPath();
+        }
+        return null;
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         switch (requestCode)
         {
             case OPEN_EXCEL_FILE:
             {
-                readExcelData(data.getData().getPath());
+                String path = getPath(this,data.getData());
+                readExcelData(path);
                 initSpinner();
                 break;
             }
@@ -230,5 +250,3 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 }
-
-

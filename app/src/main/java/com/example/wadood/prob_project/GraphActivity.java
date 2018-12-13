@@ -3,8 +3,8 @@ package com.example.wadood.prob_project;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -17,18 +17,20 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public class GraphActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
@@ -127,7 +129,7 @@ public class GraphActivity extends AppCompatActivity implements AdapterView.OnIt
 
     private void renderGraph() {
         if (activeCol1 == -1 || activeCol2 == -1){
-           return;
+            return;
         }
         String dataLabel = sheetData.getColumn(activeCol1).getHeader();
         String relationLable = sheetData.getColumn(activeCol2).getHeader();
@@ -157,22 +159,33 @@ public class GraphActivity extends AppCompatActivity implements AdapterView.OnIt
                 break;
             }
             case "BAR_CHART": {
-                List<BarEntry> entries = new ArrayList<>();
-                entries.add(new BarEntry(0f, 30f));
-                entries.add(new BarEntry(1f, 80f));
-                entries.add(new BarEntry(2f, 60f));
-                entries.add(new BarEntry(3f, 50f));
-                // gap of 2f
-                entries.add(new BarEntry(5f, 70f));
-                entries.add(new BarEntry(6f, 60f));
-
-                BarDataSet set = new BarDataSet(entries, "BarDataSet");
+                ArrayList<BarEntry> entries = new ArrayList<>();
+                final ArrayList<String> xAxisEntries = new ArrayList<>();
+                int i=0;
+                for (Map.Entry entry:
+                        sheetData.getHashMap(activeCol1, activeCol2).entrySet()) {
+                    float value = Float.parseFloat(entry.getValue().toString());
+                    String label = relationLable + " " + entry.getKey();
+                    entries.add(new BarEntry(i++, value));
+                    xAxisEntries.add(label);
+                }
+                BarDataSet set = new BarDataSet(entries, dataLabel);
+                set.setColors(ColorTemplate.MATERIAL_COLORS);
+                set.setDrawValues(true);
 
                 BarData data = new BarData(set);
-                data.setBarWidth(0.9f); // set custom bar width
+                data.setBarWidth(0.9f);
+                XAxis xAxis = chart.getXAxis();
+                xAxis.setValueFormatter(new IAxisValueFormatter(){
+                    @Override
+                    public String getFormattedValue(float value, AxisBase axis) {
+                        return xAxisEntries.get((int) value);
+                    }
+                });
                 chart.setData(data);
-                chart.setFitsSystemWindows(true); // make the x-axis fit exactly all bars
-                chart.invalidate(); // refresh
+                chart.setFitsSystemWindows(true);
+                chart.invalidate();
+                chart.animateY(1000);
                 break;
             }
             case "HISTOGRAM": {
