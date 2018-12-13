@@ -1,6 +1,12 @@
 <resources>
-    <string name="app_name">Prob_Project</string>
+    <string name="app_name">Graphy</string>
     <string name="open_file">Open File</string>
+    <string name="MI_N">Min:</string>
+    <string name="Ma_x">Max:</string>
+    <string name="Varianc_e">Variance:</string>
+    <string name="Mo_de">Mode:</string>
+    <string name="STD">STD:</string>
+    <string name="Me_aN">Mean:</string>
     <string-array name="no_file">
         <item>No File Opened Yet</item>
     </string-array>
