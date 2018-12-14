@@ -172,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             FormulaEvaluator formulaEvaluator = workbook.getCreationHelper().createFormulaEvaluator();
 
             Row headers = sheet.getRow(0);
-            int rowsCount = sheet.getPhysicalNumberOfRows();
+            int rowsCount = sheet.getLastRowNum();
             int colsCount = headers.getPhysicalNumberOfCells();
 
             sheetData = new Sheet(colsCount);
@@ -181,11 +181,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String value = getCellAsString(headers, c, formulaEvaluator);
                 sheetData.setColumn(c, new Column(value));
             }
-            for(int r = 1; r < rowsCount; r++) {
+            for(int r = 1; r <= rowsCount; r++) {
                 Row row = sheet.getRow(r);
                 for(int c = 0; c < colsCount; c++) {
-                    String value = getCellAsString(row, c, formulaEvaluator);
-                    sheetData.getColumn(c).insertRow(Double.parseDouble(value));
+                    if(row!=null){
+                        String value = getCellAsString(row, c, formulaEvaluator);
+                        sheetData.getColumn(c).insertRow(Double.parseDouble(value));
+                    }
                 }
             }
 

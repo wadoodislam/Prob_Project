@@ -132,6 +132,9 @@ public class GraphActivity extends AppCompatActivity implements AdapterView.OnIt
         String relationLable = sheetData.getColumn(activeCol2).getHeader();
         Description desc = new Description();
         desc.setText(dataLabel +" in relation to " + relationLable);
+        if(activeCol1==activeCol2){
+            desc.setText("Frequency of " + relationLable);
+        }
         chart.setDescription(desc);
         switch (graphType) {
             case "PIE_CHART": {
@@ -179,6 +182,8 @@ public class GraphActivity extends AppCompatActivity implements AdapterView.OnIt
                         return xAxisEntries.get((int) value);
                     }
                 });
+                xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                xAxis.setGranularity(1);
                 chart.setData(data);
                 chart.setFitsSystemWindows(true);
                 chart.invalidate();

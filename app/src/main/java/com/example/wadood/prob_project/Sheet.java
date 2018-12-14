@@ -45,14 +45,27 @@ public class Sheet {
     }
     public HashMap<String, Double> getHashMap(int col1, int col2){
         HashMap<String, Double> hashMap = new HashMap<>();
-        for(int i=0; i < columns[col1].length(); i++) {
-            double value = columns[col1].getRow(i);
-            String key = columns[col2].getKey(i);
-            if (hashMap.containsKey(key)) {
-                double newValue = hashMap.get(key) + value;
-                hashMap.put(key, newValue);
-            } else {
-                hashMap.put(key, value);
+        if (col1==col2){
+            for(int i=0; i < columns[col1].length(); i++) {
+                String key = columns[col1].getKey(i);
+                if (hashMap.containsKey(key)) {
+                    double newValue = hashMap.get(key) + 1;
+                    hashMap.put(key, newValue);
+                } else {
+                    hashMap.put(key, 1.0);
+                }
+            }
+        }
+        else{
+            for(int i=0; i < columns[col1].length(); i++) {
+                double value = columns[col1].getRow(i);
+                String key = columns[col2].getKey(i);
+                if (hashMap.containsKey(key)) {
+                    double newValue = hashMap.get(key) + value;
+                    hashMap.put(key, newValue);
+                } else {
+                    hashMap.put(key, value);
+                }
             }
         }
         return hashMap;
